@@ -46,6 +46,17 @@ it("should throw an error if no value is passed into the function", () => {
   };
 
   // Then we assert that the function throws an error incombination
-  expect(resultFn).not.toThrow(); // If we want to test that it won't return an error we use the .not function
-  // expect(resultFn).toThrow();
+  // expect(resultFn).not.toThrow(); // If we want to test that it won't return an error we use the .not function
+  expect(resultFn).toThrow();
+});
+
+it("should throw an error if provided with multiple arguments instead of an array", () => {
+  const num1 = 1;
+  const num2 = 2;
+
+  const resultFn = () => {
+    add(num1, num2);
+  };
+
+  expect(resultFn).toThrow(/is not iterable/);
 });
