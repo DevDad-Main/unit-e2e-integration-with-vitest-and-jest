@@ -1,6 +1,7 @@
 import { it, expect, describe } from "vitest";
 import { cleanNumbers, transformToNumber } from "./numbers";
 
+//#region Transform to Number Test Suite
 describe("transformToNumber", () => {
   it("should transform a string number to a number of type number", () => {
     const input = "1";
@@ -20,7 +21,9 @@ describe("transformToNumber", () => {
     expect(result2).toBeNaN(result2);
   });
 });
+//#endregion
 
+//#region Clean Numbers Test Suite
 describe("cleanNumbers()", () => {
   //NOTE: First Integration Test - Implicitly testing the cleanNumbers function which contains other functions inside
   it("should return an array of number values if an array of string values is provided", () => {
@@ -28,7 +31,10 @@ describe("cleanNumbers()", () => {
 
     const cleanedNumbers = cleanNumbers(numberValues);
 
-    expect(cleanedNumbers[0]).toBeTypeOf("number");
+    // expect(cleanedNumbers[0]).toBeTypeOf("number");
+
+    //NOTE: .toEqual does a deep dive comparison so we don't get the errors with toBe due to reference type errors
+    expect(cleanedNumbers).toEqual([1, 2]);
   });
 
   it("shoud throw an error if an arra with at least one empty string is provided", () => {
@@ -39,3 +45,4 @@ describe("cleanNumbers()", () => {
     expect(cleanFn).toThrow();
   });
 });
+//#endregion
