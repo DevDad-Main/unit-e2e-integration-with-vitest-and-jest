@@ -1,10 +1,10 @@
-export function generateResultText(calculatinoResult) {
+export function generateResultText(calculationResult) {
   let resultText = "";
 
-  if (calculatinoResult === "invalid") {
-    calculatinoResult = "Invalid input. You must enter valid numbers.";
-  } else if (calculatinoResult !== "no-calc") {
-    resultText = "Result: " + calculatinoResult;
+  if (calculationResult === "invalid") {
+    calculationResult = "Invalid input. You must enter valid numbers.";
+  } else if (calculationResult !== "no-calc") {
+    resultText = "Result: " + calculationResult;
   }
   return resultText;
 }
