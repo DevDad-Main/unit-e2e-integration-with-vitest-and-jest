@@ -1,20 +1,41 @@
-import { it, expect } from "vitest";
-import { transformToNumber } from "./numbers";
+import { it, expect, describe } from "vitest";
+import { cleanNumbers, transformToNumber } from "./numbers";
 
-it("should transform a string number to a number of type number", () => {
-  const input = "1";
-  const result = transformToNumber(input);
+describe("transformToNumber", () => {
+  it("should transform a string number to a number of type number", () => {
+    const input = "1";
+    const result = transformToNumber(input);
 
-  expect(result).toBeTypeOf("number");
+    expect(result).toBeTypeOf("number");
+  });
+
+  it("should yield NaN for non-transformable values", () => {
+    const input = "Invalid";
+    const input2 = {};
+
+    const result = transformToNumber(input);
+    const result2 = transformToNumber(input2);
+
+    expect(result).toBeNaN(result);
+    expect(result2).toBeNaN(result2);
+  });
 });
 
-it("should yield NaN for non-transformable values", () => {
-  const input = "Invalid";
-  const input2 = {};
+describe("cleanNumbers()", () => {
+  //NOTE: First Integration Test - Implicitly testing the cleanNumbers function which contains other functions inside
+  it("should return an array of number values if an array of string values is provided", () => {
+    const numberValues = ["1", "2"];
 
-  const result = transformToNumber(input);
-  const result2 = transformToNumber(input2);
+    const cleanedNumbers = cleanNumbers(numberValues);
 
-  expect(result).toBeNaN(result);
-  expect(result2).toBeNaN(result2);
+    expect(cleanedNumbers[0]).toBeTypeOf("number");
+  });
+
+  it("shoud throw an error if an arra with at least one empty string is provided", () => {
+    const numberValues = ["1", ""];
+
+    const cleanFn = () => cleanNumbers(numberValues);
+
+    expect(cleanFn).toThrow();
+  });
 });
