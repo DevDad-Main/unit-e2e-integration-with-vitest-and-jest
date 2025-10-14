@@ -2,7 +2,7 @@ export function generateResultText(calculationResult) {
   let resultText = "";
 
   if (calculationResult === "invalid") {
-    calculationResult = "Invalid input. You must enter valid numbers.";
+    resultText = "Invalid input. You must enter valid numbers.";
   } else if (calculationResult !== "no-calc") {
     resultText = "Result: " + calculationResult;
   }

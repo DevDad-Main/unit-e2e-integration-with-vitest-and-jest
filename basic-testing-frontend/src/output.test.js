@@ -36,7 +36,6 @@ describe("generateResultText()", () => {
     const result = "invalid";
 
     const resultText = generateResultText(result);
-    console.log(resultText);
 
     expect(resultText).toContain("Invalid");
   });
