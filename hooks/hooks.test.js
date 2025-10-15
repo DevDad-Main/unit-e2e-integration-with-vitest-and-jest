@@ -1,10 +1,38 @@
-import { it, expect } from "vitest";
+import {
+  it,
+  describe,
+  expect,
+  beforeEach,
+  beforeAll,
+  afterEach,
+  afterAll,
+} from "vitest";
 import { User } from "./hooks";
 
 const testEmail = "test@test.com";
-const user = new User(testEmail);
+let user = new User(testEmail);
 
+//#region NOTE: Calling the hooks like this will work for the whole file globally. Whereas if we call these hooks inside our describe test suite then it will only work for that specific test suite
+//#endregion
 describe("hooks", () => {
+  //NOTE: Runs before all tests
+  beforeAll(() => {
+    console.log("beforeAll");
+  });
+  //NOTE: Runs before each test
+  beforeEach(() => {
+    console.log("beforeEach");
+  });
+  //NOTE: Runs after all tests
+  afterAll(() => {
+    console.log("afterAll");
+  });
+  //NOTE: Runs after each test
+  afterEach(() => {
+    user = new User(testEmail); // Reset the user object
+    console.log("afterEach");
+  });
+
   it("should update the email", () => {
     const newTestEmail = "test2@test.com";
 
