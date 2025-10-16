@@ -52,4 +52,13 @@ describe("writeData()", () => {
     // since writeData throws synchronously before returning a promise
     expect(() => writeData()).toThrowError("No Data or File Name provided");
   });
+
+  it("should throw an error if the passed in arguments are not strings", () => {
+    const testData = 123;
+    const testFileName = undefined;
+
+    expect(() => writeData(testData, testFileName)).toThrowError(
+      "No Data or File Name provided",
+    );
+  });
 });
