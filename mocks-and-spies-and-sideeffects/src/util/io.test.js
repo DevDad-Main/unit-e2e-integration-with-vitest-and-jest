@@ -1,4 +1,4 @@
-import { it, expect, vi } from "vitest";
+import { it, expect, vi, describe } from "vitest";
 import writeData from "./io";
 import { promises as fs } from "fs";
 import { join } from "path";
@@ -16,23 +16,40 @@ vi.mock("path", () => {
   };
 });
 
-//#region NOTE: Here, we have the problem that I don't wanna execute the original writeFile function or method. Instead, we only wanna find out if it was called, but it shouldn't do its job of writing to the file system. It should do that during production, but not when we run our tests. This also sounds like the perfect use case and scenario for a spy, right?.
+describe("writeData()", () => {
+  //#region NOTE: Here, we have the problem that I don't wanna execute the original writeFile function or method. Instead, we only wanna find out if it was called, but it shouldn't do its job of writing to the file system. It should do that during production, but not when we run our tests. This also sounds like the perfect use case and scenario for a spy, right?.
 
-//NOTE: The only issue is with the spy is that we were passing in an empty function for the spy to check if it was called and its arguments
+  //NOTE: The only issue is with the spy is that we were passing in an empty function for the spy to check if it was called and its arguments
 
-//NOTE: But this is where mocks come into play. With mocks we can easily replace functionalities that are defined in modules no matter if we own them or not.
+  //NOTE: But this is where mocks come into play. With mocks we can easily replace functionalities that are defined in modules no matter if we own them or not.
 
-//#endregion
-it("should execute the writeFile method", () => {
-  const testData = "test";
-  const testFileName = "test.txt";
+  //#endregion
+  it("should execute the writeFile method", () => {
+    const testData = "test";
+    const testFileName = "test.txt";
 
-  //NOTE: Now this should no longer write to the file system as we are mocking the writeFile function.. now we needto change how we do our assertion because of this.
-  return expect(writeData(testData, testFileName)).resolves.toBeUndefined();
+    //NOTE: Now this should no longer write to the file system as we are mocking the writeFile function.. now we needto change how we do our assertion because of this.
+    // return expect(writeData(testData, testFileName)).resolves.toBeUndefined();
 
-  //NOTE: We will still call our own function, but then below we will simulate if the fs.writeFile has been called
-  // writeData(testData, testFileName);
+    //NOTE: We will still call our own function, but then below we will simulate if the fs.writeFile has been called
+    writeData(testData, testFileName);
 
-  // //NOTE: Now we can check if the writeFile function was called or not
-  // expect(fs.writeFile).toBeCalledWith(testFileName, testData);
+    // //NOTE: Now we can check if the writeFile function was called or not
+    expect(fs.writeFile).toBeCalledWith(testFileName, testData);
+  });
+
+  it("should return a promise that resolves to no value if called correctly", () => {
+    const testData = "test";
+    const testFileName = "test.txt";
+
+    return expect(writeData(testData, testFileName)).resolves.toBeUndefined();
+
+    // writeData(testData, testFileName);
+    // expect(fs.writeFile).toBeCalledWith(testFileName, testData);
+  });
+
+  it("should throw an error if no arguments are provided", () => {
+    // since writeData throws synchronously before returning a promise
+    expect(() => writeData()).toThrowError("No Data or File Name provided");
+  });
 });
