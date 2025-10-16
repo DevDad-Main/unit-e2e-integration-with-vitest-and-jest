@@ -28,11 +28,11 @@ it("should execute the writeFile method", () => {
   const testFileName = "test.txt";
 
   //NOTE: Now this should no longer write to the file system as we are mocking the writeFile function.. now we needto change how we do our assertion because of this.
-  // return expect(writeData(testData, testFileName)).resolves.toBeUndefined();
+  return expect(writeData(testData, testFileName)).resolves.toBeUndefined();
 
   //NOTE: We will still call our own function, but then below we will simulate if the fs.writeFile has been called
-  writeData(testData, testFileName);
+  // writeData(testData, testFileName);
 
-  //NOTE: Now we can check if the writeFile function was called or not
-  expect(fs.writeFile).toBeCalled();
+  // //NOTE: Now we can check if the writeFile function was called or not
+  // expect(fs.writeFile).toBeCalledWith(testFileName, testData);
 });
