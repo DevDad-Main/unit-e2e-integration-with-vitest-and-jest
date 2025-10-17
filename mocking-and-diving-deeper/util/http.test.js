@@ -1,5 +1,6 @@
 import { it, vi, expect, describe } from "vitest";
 import { sendDataRequest } from "./http";
+import { HttpError } from "./errors";
 
 const testResponseData = { testKey: "testValue" };
 
@@ -33,8 +34,6 @@ describe("sendDataRequest()", () => {
   });
 
   it("should convert the provided data to json before sending the requst", async () => {
-    const testData = { key: "value" };
-
     //#region NOTE: The issue is with this is that if the data is parsed as a string and we have stringified data then we would assume the test would pass, but the issue is then is that the below expectation will then resolve.
     //NOTE: This dosen't check to see if we resolve, this only checks for this .not.rejects with the toBe("Not a String.") above, Expects to not reject to this value, not to not reject overall
     //#endregion
@@ -50,5 +49,29 @@ describe("sendDataRequest()", () => {
     }
 
     expect(errorMessage).not.toBe("Not a String.");
+  });
+
+  it("should throw an HttpError in case of non-ok responses", () => {
+    testFetch.mockImplementationOnce((url, options) => {
+      return new Promise((resolve, reject) => {
+        if (typeof options.body !== "string") {
+          return reject("Not a String.");
+        }
+
+        const testResponse = {
+          ok: false,
+          json() {
+            return new Promise((resolve, reject) => {
+              resolve(testResponseData);
+            });
+          },
+        };
+        resolve(testResponse);
+      });
+    });
+
+    const testData = { key: "value" };
+
+    return expect(sendDataRequest(testData)).rejects.toBeInstanceOf(HttpError);
   });
 });
