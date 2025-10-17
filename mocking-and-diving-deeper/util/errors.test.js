@@ -25,3 +25,28 @@ describe("ValidationError", () => {
     expect(error.message).toBe("");
   });
 });
+
+describe("HttpError", () => {
+  it("should contain the provided status code, message and data", () => {
+    const testStatusCode = 400;
+    const testMessage = "Bad request";
+    const testData = { error: "Something went wrong" };
+
+    const testError = new HttpError(testStatusCode, testMessage, testData);
+
+    expect(testError.statusCode).toBe(testStatusCode);
+    expect(testError.message).toBe(testMessage);
+    expect(testError.data).toBe(testData);
+  });
+
+  it("should contain undefined as data if no data is provided", () => {
+    const testStatusCode = 400;
+    const testMessage = "Bad request";
+
+    const testError = new HttpError(testStatusCode, testMessage);
+
+    expect(testError.statusCode).toBe(testStatusCode);
+    expect(testError.message).toBe(testMessage);
+    expect(testError.data).not.toBeDefined();
+  });
+});

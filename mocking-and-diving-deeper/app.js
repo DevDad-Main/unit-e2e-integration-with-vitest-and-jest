@@ -1,6 +1,6 @@
-import { extractPostData, savePost } from './posts/posts.js';
+import { extractPostData, savePost } from "./posts/posts.js";
 
-const formElement = document.querySelector('form');
+const formElement = document.querySelector("form");
 
 export async function submitFormHandler(event) {
   event.preventDefault();
@@ -14,4 +14,4 @@ export async function submitFormHandler(event) {
   }
 }
 
-formElement.addEventListener('submit', submitFormHandler);
+formElement.addEventListener("submit", submitFormHandler);
